@@ -1,4 +1,4 @@
-﻿@model Leaflit.ViewModels.AddBookViewModel
+﻿@model LeafLit.ViewModels.AddBookViewModel
 
 <h1>Add Book</h1>
 
@@ -23,7 +23,7 @@
 
     <div class="form-group">
         <label asp-for="Genres"></label>
-        <select asp-for="TagID" asp-items="Model.Genre"></select>
+        <select asp-for="GenreID" asp-items="Model.Genres"></select>
     </div>
 
     <input type="submit" value="Add Book" />

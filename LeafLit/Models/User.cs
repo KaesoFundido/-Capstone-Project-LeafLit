@@ -11,5 +11,7 @@ namespace LeafLit.Models
         public int UserID { get; set; }
         private string Password { get; set; }
         private string Validation { get; set; }
+
+        public IList<UserBook> Shelf { get; set; }
     }
 }

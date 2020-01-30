@@ -1,17 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LeafLit.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Leaflit.ViewModels
+namespace LeafLit.ViewModels
 {
     public class AddBookViewModel
     {
-        
-        Author
-        Rating
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Rating { get; set; }
+        public List<SelectListItem> Genres { get; set; }
+        public int GenreID { get; set; }
 
+        public AddBookViewModel()
+        {
+        }
     }
 }

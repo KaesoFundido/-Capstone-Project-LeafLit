@@ -7,19 +7,30 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LeafLit.Data
 {
-    public class BookDbContext : IdentityDbContext
+    public class BookDbContext : DbContext
     {
-        public DbSet<Shelf> Shelves { get; set; }
+        //public DbSet<Shelf> Shelves { get; set; }
         public DbSet<Genre> Genres { get; set; }
 
         public DbSet<Book> Books { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<BookGenre> BookGenres { get; set; }
+
+        public DbSet<UserBook> UserBooks { get; set; }
         
         public BookDbContext(DbContextOptions<BookDbContext> options):base(options){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BookTag>()
-            .HasKey(b => new{ b.BookID, b.GenreID });   
+            modelBuilder.Entity<BookGenre>()
+            .HasKey(b => new{ b.BookID, b.GenreID });
+
+            modelBuilder.Entity<UserBook>()
+            .HasKey(b => new { b.UserID, b.BookID });
+
+            base.OnModelCreating(modelBuilder);
         }
 
 
