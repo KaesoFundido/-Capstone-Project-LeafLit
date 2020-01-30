@@ -1,0 +1,35 @@
+﻿@model LeafLit.ViewModels.FindBookViewModel
+@{
+    ViewData["Title"] = "SearchResults";
+}
+
+<h1>Search Results</h1>
+<ul>
+    @if (Model.volumes.totalItems == 0)
+    {
+      <li>No Results</li>
+    }
+
+    else
+    {
+
+
+        @foreach (Volume vol in Model.volumes.items)
+        {
+            <li>
+                @vol.volumeInfo.title
+                <ul>
+                   @foreach (string author in vol.volumeInfo.authors)
+                   {
+                        <li>
+                            @author
+                        </li>
+                   }
+                </ul>
+            </li>
+        }
+
+    }
+
+</ul>
+

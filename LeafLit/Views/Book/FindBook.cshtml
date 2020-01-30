@@ -1,0 +1,16 @@
+﻿@model LeafLit.ViewModels.FindBookViewModel
+@{
+    ViewData["Title"] = "FindBook";
+}
+
+<h1>Find Book</h1>
+
+<form asp-controller="Book" asp-action="FindBook" method="post">
+    <div class="form-group">
+        <label asp-for="ISBN"></label>
+        <input class="form-control" asp-for="ISBN" />
+        <span asp-validation-for="ISBN"></span>
+    </div>
+
+    <input type="submit" value="Find Book" />
+</form>
