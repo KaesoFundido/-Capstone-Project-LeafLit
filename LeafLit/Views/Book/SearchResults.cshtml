@@ -15,20 +15,31 @@
 
 
         @foreach (Volume vol in Model.volumes.items)
-        {
+         {
             <li>
                 @vol.volumeInfo.title
-                <ul>
-                   @foreach (string author in vol.volumeInfo.authors)
-                   {
-                        <li>
-                            @author
-                        </li>
-                   }
-                </ul>
-            </li>
-        }
 
+                @if (vol.volumeInfo.authors == null)
+                {
+                    <h5>No Author Found.</h5>
+                }
+
+                else
+                {
+                    <ul>
+                       @foreach (string author in vol.volumeInfo.authors)
+                       {
+                            <li>
+                                @author
+                            </li>
+                       }
+                    </ul>
+                }
+
+            </li>
+         }
+
+        
     }
 
 </ul>

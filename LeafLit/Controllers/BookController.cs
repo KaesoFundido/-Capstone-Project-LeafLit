@@ -34,10 +34,43 @@ namespace LeafLit.Controllers
         }
 
         [HttpPost]
-        public IActionResult FindBook(FindBookViewModel findbook)
+        public IActionResult FindBook(FindBookViewModel findbook) 
         {
-            findbook.volumes = googleBookAPI.GetVolumes("volumes?q=isbn:" + findbook.ISBN );
-            return View("SearchResults",findbook);
+            if (findbook.ISBN!=null || findbook.Title!=null||findbook.Author!=null)
+            {
+                string query = "volumes?q=";
+                if (findbook.ISBN != null)
+                {
+                    query += "isbn:" + findbook.ISBN;
+                }
+                if (findbook.Title != null)
+                {
+                    if (query == "volumes?q=")
+                    {
+                        query += "intitle:" + findbook.Title;
+                    }
+                    else
+                    {
+                        query += "+intitle:" + findbook.Title;
+                    }
+                }
+                if (findbook.Author != null)
+                {
+                    if (query == "volumes?q=")
+                    {
+                        query += "inauthor:" + findbook.Author;
+                    }
+                    else
+                    {
+                        query += "+inauthor:" + findbook.Author;
+                    }
+                }
+                findbook.volumes = googleBookAPI.GetVolumes(query);
+
+
+                return View("SearchResults", findbook);
+            }
+            return Redirect("/Book/FindBook");
         }
     }
 }
