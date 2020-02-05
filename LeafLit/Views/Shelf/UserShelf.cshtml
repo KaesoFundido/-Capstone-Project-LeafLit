@@ -1,0 +1,48 @@
+﻿@model LeafLit.ViewModels.SingleUserShelfViewModel
+@{
+    ViewData["Title"] = "UserShelf";
+}
+
+<h1>@Model.user.Username's Shelf</h1>
+
+
+@if (Model.shelf.Count > 0)
+{
+
+    @for (int i = 0; i < Model.shelf.Count; i++)
+    {
+        Book book = Model.shelf[i];
+        var rating = Model.ratings.Where(x => x.UserID == Model.user.UserID && x.BookID == book.BookID);
+        <table>
+            <tr>
+                <td>
+                    <img src="@book.ThumbnailURL" />
+                </td>
+                <td>
+                    <div class="rating">
+                        @for (int num = 5; num >= 1; num--)
+                        {
+                            @if (rating.Count() > 0 && num <= rating.First().Rating)
+                            {
+                        <a asp-controller="Shelf" asp-action="RateBook"
+                           asp-route-userid="@Model.user.UserID" asp-route-bookid="@book.BookID"
+                           asp-route-rating="@num" style="color: forestgreen; font-family:Georgia,serif,sans-serif;" name="leaf" id="@string.Format("leaf{0}", num)">★</a>
+                            }
+                            else
+                            {
+                    <a asp-controller="Shelf" asp-action="RateBook"
+                       asp-route-userid="@Model.user.UserID" asp-route-bookid="@book.BookID"
+                       asp-route-rating="@num" style="color: gray; font-family:Georgia,serif,sans-serif;" name="leaf" id="@string.Format("leaf{0}", num)">★</a>
+                            }
+                        }
+                    </div>
+                    <p>Title: @book.Title</p>
+                    <p>Author: @book.Author</p>
+                    <p>Genre: @book.Genres</p>
+                    <a asp-controller="Shelf" asp-action="RemoveFromShelf" asp-route-userid="@Model.user.UserID" asp-route-bookid="@book.BookID">Remove</a>
+                </td>
+            </tr>
+        </table>
+    }
+}
+

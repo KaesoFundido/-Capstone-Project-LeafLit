@@ -3,14 +3,16 @@ using LeafLit.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LeafLit.Data.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200204061241_UpdatingDb")]
+    partial class UpdatingDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,16 +30,10 @@ namespace LeafLit.Data.Migrations
                     b.Property<string>("Author")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Genres")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ISBN_10")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN_13")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ThumbnailURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -46,6 +42,36 @@ namespace LeafLit.Data.Migrations
                     b.HasKey("BookID");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("LeafLit.Models.BookGenre", b =>
+                {
+                    b.Property<int>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GenreID")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookID", "GenreID");
+
+                    b.HasIndex("GenreID");
+
+                    b.ToTable("BookGenres");
+                });
+
+            modelBuilder.Entity("LeafLit.Models.Genre", b =>
+                {
+                    b.Property<int>("GenreID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("GenreName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("GenreID");
+
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("LeafLit.Models.User", b =>
@@ -94,6 +120,21 @@ namespace LeafLit.Data.Migrations
                     b.HasIndex("BookID");
 
                     b.ToTable("UserBookRatings");
+                });
+
+            modelBuilder.Entity("LeafLit.Models.BookGenre", b =>
+                {
+                    b.HasOne("LeafLit.Models.Book", "Book")
+                        .WithMany("Genres")
+                        .HasForeignKey("BookID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LeafLit.Models.Genre", "Genre")
+                        .WithMany("BooksByGenre")
+                        .HasForeignKey("GenreID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LeafLit.Models.UserBook", b =>

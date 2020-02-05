@@ -1,5 +1,12 @@
-﻿@model LeafLit.Models.ImageLinks
+﻿@model LeafLit.ViewModels.AllUserShelvesViewModel
 
 
+    <ul>
+        @foreach (User user in Model.users)
+        {
+            <li>
+                <a asp-controller="Shelf" asp-action="UserShelf" asp-route-userID="@user.UserID">@user.Username</a>
+            </li>
+        }
+    </ul>
 
-<a asp-controller="Home" asp-action="Index"><img src="http://books.google.com/books/content?id=jeqwkbLg_BsC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api"</a>

@@ -20,6 +20,7 @@ namespace LeafLit.Models
         public SaleInfo saleInfo { get; set; }
         public AccessInfo accessInfo { get; set; }
         public SearchInfo searchInfo { get; set; }
+        public bool selected { get; set; }
     }
     public class SearchInfo
     {

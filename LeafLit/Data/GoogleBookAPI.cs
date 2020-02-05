@@ -23,13 +23,33 @@ namespace LeafLit.Data
             Volumes volOut = new Volumes();
             Task<string> retrieveVolumes = Task.Run<string>(async () =>
             {
-               //HttpClient client = Initialize();
-               var jsonResponse = await client.GetStringAsync(queryString);
-               return jsonResponse;
+                //HttpClient client = Initialize();
+                var response = await client.GetAsync(queryString);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    return "QueryFail";
+                }
+                //var jsonResponse = await client.GetStringAsync(queryString);
+                //return jsonResponse;
             });
             retrieveVolumes.Wait();
-            volOut = JsonConvert.DeserializeObject<Volumes>(retrieveVolumes.Result);
-            return volOut;
+            if(retrieveVolumes.Result == "QueryFail")
+            {
+                return new Volumes();
+            }
+            else
+            {
+                volOut = JsonConvert.DeserializeObject<Volumes>(retrieveVolumes.Result);
+                foreach (Volume vol in volOut.items)
+                {
+                    vol.selected = false;
+                }
+                return volOut;
+            }
         }
 
     }

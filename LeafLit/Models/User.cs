@@ -13,5 +13,6 @@ namespace LeafLit.Models
         private string Validation { get; set; }
 
         public IList<UserBook> Shelf { get; set; }
+        public IList<UserBookRating> Ratings { get; set; }
     }
 }

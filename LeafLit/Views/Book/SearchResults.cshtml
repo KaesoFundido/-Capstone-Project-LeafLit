@@ -1,46 +1,85 @@
 ﻿@model LeafLit.ViewModels.FindBookViewModel
-@{
-    ViewData["Title"] = "SearchResults";
-}
 
 <h1>Search Results</h1>
-<ul>
+
+<form asp-controller="Book" asp-action="AddBooksToShelf" method="post">
     @if (Model.volumes.totalItems == 0)
     {
-      <li>No Results</li>
+        <p>No Results</p>
     }
 
     else
     {
+        <input type="hidden" value="@Model.volumes.totalItems" name="volumes.totalItems" />
+        @for (int i = 0; i < Model.volumes.items.Count; i++)
+        {
+            Volume vol = Model.volumes.items[i];
+            <table>
+                <tr>
+                    <td>
+                        <div class="form-group">
+                            <label asp-for="volumes.items[i].selected">Add?</label>
+                            <input type="checkbox" asp-for="volumes.items[i].selected" />
+                            <span asp-validation-for="volumes.items[i].selected"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="hidden" asp-for="volumes.items[i].volumeInfo.title" />
+                            @if (vol.volumeInfo.industryIdentifiers != null)
+                            {
+                                @for (int h = 0; h < vol.volumeInfo.industryIdentifiers.Count; h++)
+                                {
+                                    <input type="hidden" asp-for="volumes.items[i].volumeInfo.industryIdentifiers[h].identifier" />
+                                    <input type="hidden" asp-for="volumes.items[i].volumeInfo.industryIdentifiers[h].type" />
+                                }
+                            }
+                            @if (vol.volumeInfo.categories != null)
+                            {
+                                @for (int h = 0; h < vol.volumeInfo.categories.Count; h++)
+                                {
+                                    <input type="hidden" asp-for="volumes.items[i].volumeInfo.categories[h]" />
+                                    
+                                }
+                            }
+                            @if (vol.volumeInfo.imageLinks != null && vol.volumeInfo.imageLinks.thumbnail != null)
+                            {
+                                <input type="hidden" asp-for="volumes.items[i].volumeInfo.imageLinks.thumbnail" />
+                            }
+                            @if (vol.volumeInfo.authors != null)
+                            {
+                                @for (int h = 0; h < vol.volumeInfo.authors.Count; h++)
+                                {
+                                    <input type="hidden" asp-for="volumes.items[i].volumeInfo.authors[h]" />
+                                }
+                                <input type="hidden" asp-for="volumes.items[i].volumeInfo" />
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            @vol.volumeInfo.title
 
+                            @if (vol.volumeInfo.authors == null)
+                            {
+                                <p>No Author Found.</p>
+                            }
 
-        @foreach (Volume vol in Model.volumes.items)
-         {
-            <li>
-                @vol.volumeInfo.title
-
-                @if (vol.volumeInfo.authors == null)
-                {
-                    <h5>No Author Found.</h5>
-                }
-
-                else
-                {
-                    <ul>
-                       @foreach (string author in vol.volumeInfo.authors)
-                       {
-                            <li>
-                                @author
-                            </li>
-                       }
-                    </ul>
-                }
-
-            </li>
-         }
-
-        
+                            else
+                            {
+                                <ul>
+                                    @foreach (string author in vol.volumeInfo.authors)
+                                    {
+                                        <li>
+                                            @author
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        }
     }
-
-</ul>
+    <input type="submit" value="Add Books" />
+</form>
 
